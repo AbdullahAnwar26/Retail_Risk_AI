@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.consent.applied.v1.schema.json",
+  "title": "com.retailintel.consent.applied.v1",
+  "description": "Consent change processed and affected results recomputed. Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "CUSTOMER_OUTCOME",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.consent.applied.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/customerLabels"
+        }
+      ],
+      "required": [
+        "consent_ref",
+        "purpose",
+        "change",
+        "affected_result_ids"
+      ],
+      "properties": {
+        "consent_ref": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Token"
+        },
+        "purpose": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+        },
+        "change": {
+          "enum": [
+            "GRANTED",
+            "WITHDRAWN",
+            "EXPIRED"
+          ]
+        },
+        "affected_result_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+          }
+        },
+        "cancelled_review_item_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "subject"
+  ],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.consent.applied.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.consent.applied.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "subject": "cust_tok_A",
+      "jurisdiction": "US-NY-NYC",
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "permitted_use": [
+          "RETAIL_INSIGHT",
+          "MARKETING_SUGGESTION"
+        ],
+        "customer_token": "cust_tok_A",
+        "consent_ref": "cns_tok_124",
+        "purpose": "MARKETING",
+        "change": "WITHDRAWN",
+        "affected_result_ids": [
+          "res_01JC9Z8Q4N"
+        ],
+        "cancelled_review_item_ids": [
+          "rvw_01JC9Z8Q7C"
+        ]
+      }
+    }
+  ]
+}

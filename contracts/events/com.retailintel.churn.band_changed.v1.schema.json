@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.churn.band_changed.v1.schema.json",
+  "title": "com.retailintel.churn.band_changed.v1",
+  "description": "Churn band crossed a threshold (served by RULESET ACTIVE or ML_MODEL APPROVED only; never SHADOW). Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "CUSTOMER_OUTCOME",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.churn.band_changed.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/customerLabels"
+        }
+      ],
+      "required": [
+        "new_band",
+        "model_id",
+        "model_version",
+        "kind",
+        "decision_id"
+      ],
+      "properties": {
+        "old_band": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}$"
+        },
+        "new_band": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}$"
+        },
+        "model_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "model_version": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/VersionLabel"
+        },
+        "kind": {
+          "enum": [
+            "RULESET",
+            "ML_MODEL"
+          ]
+        },
+        "decision_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        }
+      }
+    }
+  },
+  "required": [
+    "subject"
+  ],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.churn.band_changed.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.churn.band_changed.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "subject": "cust_tok_A",
+      "decisionid": "dec_01JC9Z8Q5A",
+      "jurisdiction": "US-NY-NYC",
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "permitted_use": [
+          "RETAIL_INSIGHT",
+          "MARKETING_SUGGESTION"
+        ],
+        "customer_token": "cust_tok_A",
+        "old_band": "LOW",
+        "new_band": "HIGH",
+        "model_id": "churn-rules",
+        "model_version": "1.0.0",
+        "kind": "RULESET",
+        "decision_id": "dec_01JC9Z8Q5A"
+      }
+    }
+  ]
+}

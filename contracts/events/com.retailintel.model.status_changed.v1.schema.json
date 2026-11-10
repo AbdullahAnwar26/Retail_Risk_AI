@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.model.status_changed.v1.schema.json",
+  "title": "com.retailintel.model.status_changed.v1",
+  "description": "Registry entry status change: RULESET ACTIVE/RETIRED, ML_MODEL SHADOW/APPROVED/RETIRED, or fallback (DEC-47). Governance event; outside the forbidden-term linter's output scope (planning/15 §3.3). Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "GOVERNANCE",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.model.status_changed.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/labels"
+        }
+      ],
+      "required": [
+        "model_id",
+        "model_version",
+        "kind",
+        "status"
+      ],
+      "properties": {
+        "model_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "model_version": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/VersionLabel"
+        },
+        "kind": {
+          "enum": [
+            "RULESET",
+            "ML_MODEL"
+          ]
+        },
+        "from_status": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "SHADOW",
+            "APPROVED",
+            "RETIRED",
+            null
+          ]
+        },
+        "status": {
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "SHADOW",
+            "APPROVED",
+            "RETIRED"
+          ]
+        },
+        "fallback": {
+          "type": "boolean"
+        },
+        "mrm_approval_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "required": [],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.model.status_changed.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.model.status_changed.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "model_id": "churn-ml",
+        "model_version": "0.4.0",
+        "kind": "ML_MODEL",
+        "from_status": "DRAFT",
+        "status": "SHADOW",
+        "fallback": false,
+        "mrm_approval_ref": null
+      }
+    }
+  ]
+}

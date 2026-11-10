@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.ingest.completed.v1.schema.json",
+  "title": "com.retailintel.ingest.completed.v1",
+  "description": "Bulk ingest batch committed (or held/failed). Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "OPERATIONAL",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.ingest.completed.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/labels"
+        }
+      ],
+      "required": [
+        "batch_id",
+        "entity_type",
+        "state",
+        "counts"
+      ],
+      "properties": {
+        "batch_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "entity_type": {
+          "enum": [
+            "CUSTOMER",
+            "ACCOUNT",
+            "TRANSACTION",
+            "FINANCIAL_GOAL",
+            "PRODUCT_CATALOGUE"
+          ]
+        },
+        "state": {
+          "enum": [
+            "COMMITTED",
+            "HELD_FOR_REVIEW",
+            "FAILED"
+          ]
+        },
+        "counts": {
+          "type": "object",
+          "required": [
+            "received",
+            "accepted",
+            "rejected"
+          ],
+          "properties": {
+            "received": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "accepted": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "rejected": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "duplicates_skipped": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "report_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "required": [],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.ingest.completed.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.ingest.completed.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "batch_id": "bat_01JC9",
+        "entity_type": "TRANSACTION",
+        "state": "COMMITTED",
+        "counts": {
+          "received": 1000,
+          "accepted": 990,
+          "rejected": 6,
+          "duplicates_skipped": 4
+        },
+        "report_ref": "rpt_bat_01JC9"
+      }
+    }
+  ]
+}

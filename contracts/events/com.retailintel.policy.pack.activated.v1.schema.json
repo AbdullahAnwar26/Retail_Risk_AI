@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.policy.pack.activated.v1.schema.json",
+  "title": "com.retailintel.policy.pack.activated.v1",
+  "description": "Pack version live: ACTIVE, or ILLUSTRATIVE in a standalone demo (DEC-44, DEC-45). Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "GOVERNANCE",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.policy.pack.activated.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/labels"
+        }
+      ],
+      "required": [
+        "deployment_id",
+        "activation_id",
+        "packs",
+        "pack_state"
+      ],
+      "properties": {
+        "deployment_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "activation_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "packs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "pack_id",
+              "pack_version"
+            ],
+            "properties": {
+              "pack_id": {
+                "$ref": "cloudevent-envelope.schema.json#/$defs/PackId"
+              },
+              "pack_version": {
+                "$ref": "cloudevent-envelope.schema.json#/$defs/SemVer"
+              }
+            }
+          }
+        },
+        "pack_state": {
+          "enum": [
+            "ACTIVE",
+            "ILLUSTRATIVE"
+          ]
+        },
+        "replaced_pack_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_bundle_sha256": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Sha256"
+        }
+      }
+    }
+  },
+  "required": [],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.policy.pack.activated.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.policy.pack.activated.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "deployment_id": "demo-01",
+        "activation_id": "actv_01JC9",
+        "packs": [
+          {
+            "pack_id": "PACK-US-NYC",
+            "pack_version": "0.3.0"
+          }
+        ],
+        "pack_state": "ACTIVE",
+        "replaced_pack_version": "0.2.0",
+        "effective_bundle_sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+      }
+    }
+  ]
+}

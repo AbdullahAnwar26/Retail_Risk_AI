@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.insights.updated.v1.schema.json",
+  "title": "com.retailintel.insights.updated.v1",
+  "description": "Profile/features recomputed. Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "CUSTOMER_OUTCOME",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.insights.updated.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/customerLabels"
+        }
+      ],
+      "required": [
+        "result_id",
+        "as_of",
+        "decision_id"
+      ],
+      "properties": {
+        "result_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "as_of": {
+          "type": "string"
+        },
+        "decision_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "feature_set_version": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/VersionLabel"
+        }
+      }
+    }
+  },
+  "required": [
+    "subject"
+  ],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.insights.updated.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.insights.updated.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "subject": "cust_tok_A",
+      "decisionid": "dec_01JC9Z8Q5A",
+      "jurisdiction": "US-NY-NYC",
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "permitted_use": [
+          "RETAIL_INSIGHT",
+          "MARKETING_SUGGESTION"
+        ],
+        "customer_token": "cust_tok_A",
+        "result_id": "res_01JC9Z8Q4N",
+        "as_of": "2026-11-09",
+        "decision_id": "dec_01JC9Z8Q5A",
+        "feature_set_version": "fs-1.2.0"
+      }
+    }
+  ]
+}

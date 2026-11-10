@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.retention.action_suggested.v1.schema.json",
+  "title": "com.retailintel.retention.action_suggested.v1",
+  "description": "Advisory retention action suggested (no automatic contact). Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "CUSTOMER_OUTCOME",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.retention.action_suggested.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/customerLabels"
+        }
+      ],
+      "required": [
+        "action_id",
+        "action_type",
+        "priority",
+        "decision_id"
+      ],
+      "properties": {
+        "action_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "action_type": {
+          "type": "string",
+          "pattern": "^RA_[A-Z0-9_]{2,60}$"
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "requires_human_review": {
+          "type": "boolean"
+        },
+        "decision_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        }
+      }
+    }
+  },
+  "required": [
+    "subject"
+  ],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.retention.action_suggested.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.retention.action_suggested.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "subject": "cust_tok_A",
+      "decisionid": "dec_01JC9Z8Q5A",
+      "jurisdiction": "US-NY-NYC",
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "permitted_use": [
+          "RETAIL_INSIGHT",
+          "MARKETING_SUGGESTION"
+        ],
+        "customer_token": "cust_tok_A",
+        "action_id": "act_01JC9Z8Q8D",
+        "action_type": "RA_HUMAN_CHECKIN",
+        "priority": 1,
+        "requires_human_review": true,
+        "decision_id": "dec_01JC9Z8Q5A"
+      }
+    }
+  ]
+}

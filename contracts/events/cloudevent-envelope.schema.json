@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/cloudevent-envelope.schema.json",
+  "title": "Retail intelligence CloudEvent envelope (v1)",
+  "description": "CloudEvents 1.0 structured-mode envelope shared by every event type (planning/15 §9). Transport is deferred (transactional outbox; host bus later, DEC-33). Payloads carry ids and summaries; consumers fetch details through the API. Every payload carries not_for_credit_decisioning = true; customer-outcome payloads also carry permitted_use (IC7, DEC-42). When the runtime bundle is ILLUSTRATIVE the illustrative extension attribute and data.illustrative are true and data.watermark is set (DEC-44). Jurisdiction codes are reference data; the envelope assumes no market. Change log: 2026-11-09 created (PH-3, readiness P-4). 2026-11-10: optional extension attributes ritrack and ricell added (additive, contract 1.1.1).",
+  "type": "object",
+  "required": [
+    "specversion",
+    "id",
+    "source",
+    "type",
+    "time",
+    "datacontenttype",
+    "contractversion",
+    "correlationid",
+    "illustrative",
+    "data"
+  ],
+  "properties": {
+    "specversion": {
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "source": {
+      "type": "string",
+      "pattern": "^/retail-intel/[A-Za-z0-9][A-Za-z0-9_.:-]{1,127}$",
+      "description": "/retail-intel/{deployment_id}"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^com\\.retailintel\\.[a-z_]+(\\.[a-z_]+)*\\.v[0-9]+$"
+    },
+    "subject": {
+      "$ref": "#/$defs/Token",
+      "description": "customer_token where applicable"
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "datacontenttype": {
+      "const": "application/json"
+    },
+    "dataschema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "contractversion": {
+      "$ref": "#/$defs/SemVer",
+      "description": "Extension attribute: contract version."
+    },
+    "correlationid": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "description": "Extension attribute: correlation id of the causing request."
+    },
+    "decisionid": {
+      "$ref": "#/$defs/Identifier",
+      "description": "Extension attribute: decision-log id, where a policy decision applies."
+    },
+    "jurisdiction": {
+      "$ref": "#/$defs/JurisdictionCode",
+      "description": "Extension attribute: most specific jurisdiction code of the subject context."
+    },
+    "illustrative": {
+      "type": "boolean",
+      "description": "Extension attribute: true only for an ILLUSTRATIVE bundle (standalone demo)."
+    },
+    "ritrack": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,32}$",
+      "description": "Optional extension attribute (contract 1.1.1, DEC-61): deployment track from the read-only deployment profile (reference data, e.g. A or B). Market-neutral."
+    },
+    "ricell": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,32}$",
+      "description": "Optional extension attribute (contract 1.1.1, DEC-52, DEC-61): data cell that produced the event (e.g. A-US, A-UK), so events from different cells of one deployment can be told apart."
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "Identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{2,127}$"
+    },
+    "Token": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{2,127}$"
+    },
+    "SemVer": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "VersionLabel": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.+-]{0,63}$"
+    },
+    "ReferenceCode": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_.-]{1,63}$"
+    },
+    "ControlId": {
+      "type": "string",
+      "pattern": "^CTL-[A-Z0-9-]{2,60}$"
+    },
+    "PackId": {
+      "type": "string",
+      "pattern": "^PACK-[A-Z0-9-]{1,60}$"
+    },
+    "PolicyId": {
+      "type": "string",
+      "pattern": "^POL-[A-Z0-9-]{1,60}$"
+    },
+    "Sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "JurisdictionCode": {
+      "type": "string",
+      "pattern": "^(\\*|UNKNOWN|[A-Z]{2}(-[A-Z0-9]{1,10}){0,3})$"
+    },
+    "Channel": {
+      "enum": [
+        "MOBILE_APP",
+        "WEB",
+        "BRANCH_STAFF",
+        "EMAIL",
+        "SMS",
+        "PUSH",
+        "CALL_CENTRE"
+      ]
+    },
+    "Watermark": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "illustrative - not legal advice - not for real customers",
+        null
+      ]
+    },
+    "PermittedUse": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "RETAIL_INSIGHT",
+          "MARKETING_SUGGESTION"
+        ]
+      }
+    },
+    "labels": {
+      "description": "Labels carried by every event payload.",
+      "type": "object",
+      "required": [
+        "not_for_credit_decisioning",
+        "illustrative",
+        "watermark"
+      ],
+      "properties": {
+        "not_for_credit_decisioning": {
+          "const": true
+        },
+        "illustrative": {
+          "type": "boolean"
+        },
+        "watermark": {
+          "$ref": "#/$defs/Watermark"
+        }
+      },
+      "if": {
+        "properties": {
+          "illustrative": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "watermark": {
+            "const": "illustrative - not legal advice - not for real customers"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "watermark": {
+            "const": null
+          }
+        }
+      }
+    },
+    "customerLabels": {
+      "description": "Labels carried by every customer-outcome event payload (IC7).",
+      "allOf": [
+        {
+          "$ref": "#/$defs/labels"
+        }
+      ],
+      "type": "object",
+      "required": [
+        "permitted_use",
+        "customer_token"
+      ],
+      "properties": {
+        "permitted_use": {
+          "$ref": "#/$defs/PermittedUse"
+        },
+        "customer_token": {
+          "$ref": "#/$defs/Token"
+        }
+      }
+    }
+  }
+}

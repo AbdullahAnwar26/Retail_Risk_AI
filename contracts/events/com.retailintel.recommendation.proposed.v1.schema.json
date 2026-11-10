@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.recommendation.proposed.v1.schema.json",
+  "title": "com.retailintel.recommendation.proposed.v1",
+  "description": "New suggestion or credit referral. CREDIT_REFERRAL only means 'refer to the credit platform for assessment' and carries no eligibility, limit, rate or likelihood; this is the defined outbound referral handoff (planning/15 §11). No event type for credit decisions exists. Change log: 2026-11-09 created (PH-3, readiness P-4). 2026-11-10 (contract 1.2.0, V-9, file 20 SDC-11): optional `sharia_disclosure_required`. The event carries ids and summaries only, never the Sharia disclosure block; in an ISLAMIC deployment a consumer must not render a product suggestion or credit referral from this event alone but fetch the recommendation through the API, which carries `sharia_disclosure` (render refused if it is missing). Track A (CONVENTIONAL) events never carry the field. Second example: Track B demo.",
+  "x-ri-output-class": "CUSTOMER_OUTCOME",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.recommendation.proposed.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/customerLabels"
+        }
+      ],
+      "required": [
+        "rec_id",
+        "kind",
+        "product_code",
+        "requires_human_review",
+        "allowed_channels",
+        "decision_id"
+      ],
+      "properties": {
+        "rec_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "kind": {
+          "enum": [
+            "PRODUCT_SUGGESTION",
+            "SERVICE_SUGGESTION",
+            "EDUCATIONAL_CONTENT",
+            "CREDIT_REFERRAL"
+          ]
+        },
+        "product_code": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/ReferenceCode"
+        },
+        "rank": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "requires_human_review": {
+          "type": "boolean"
+        },
+        "review_item_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "allowed_channels": {
+          "type": "array",
+          "items": {
+            "$ref": "cloudevent-envelope.schema.json#/$defs/Channel"
+          }
+        },
+        "referral_target": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decision_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "sharia_disclosure_required": {
+          "type": "boolean",
+          "const": true,
+          "description": "ISLAMIC deployments only: true on PRODUCT_SUGGESTION and CREDIT_REFERRAL events (the SDC-11 disclosure must be rendered from the API recommendation). Absent in CONVENTIONAL deployments."
+        }
+      }
+    }
+  },
+  "required": [
+    "subject"
+  ],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.recommendation.proposed.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.recommendation.proposed.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "subject": "cust_tok_A",
+      "decisionid": "dec_01JC9Z8Q5A",
+      "jurisdiction": "US-NY-NYC",
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "permitted_use": [
+          "RETAIL_INSIGHT",
+          "MARKETING_SUGGESTION"
+        ],
+        "customer_token": "cust_tok_A",
+        "rec_id": "rec_01JC9Z8Q6B",
+        "kind": "PRODUCT_SUGGESTION",
+        "product_code": "SAV-DEMO-01",
+        "rank": 1,
+        "requires_human_review": true,
+        "review_item_id": "rvw_01JC9Z8Q7C",
+        "allowed_channels": [
+          "MOBILE_APP",
+          "EMAIL"
+        ],
+        "referral_target": null,
+        "decision_id": "dec_01JC9Z8Q5A"
+      }
+    },
+    {
+      "specversion": "1.0",
+      "id": "evt_01JCB0A2E5",
+      "source": "/retail-intel/demo-b-ae",
+      "type": "com.retailintel.recommendation.proposed.v1",
+      "time": "2026-11-10T09:15:00Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.recommendation.proposed.v1.schema.json",
+      "contractversion": "1.2.0",
+      "correlationid": "corr-b2e4f1",
+      "illustrative": true,
+      "subject": "cust_tok_B7",
+      "decisionid": "dec_01JCB0A1C3",
+      "jurisdiction": "AE-DU",
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": true,
+        "watermark": "illustrative - not legal advice - not for real customers",
+        "permitted_use": [
+          "RETAIL_INSIGHT",
+          "MARKETING_SUGGESTION"
+        ],
+        "customer_token": "cust_tok_B7",
+        "rec_id": "rec_01JCB0A1D4",
+        "kind": "PRODUCT_SUGGESTION",
+        "product_code": "SAV-WAKALA-SYNTH-01",
+        "rank": 1,
+        "requires_human_review": false,
+        "review_item_id": null,
+        "allowed_channels": [
+          "MOBILE_APP"
+        ],
+        "referral_target": null,
+        "decision_id": "dec_01JCB0A1C3",
+        "sharia_disclosure_required": true
+      },
+      "ritrack": "B",
+      "ricell": "B-AE"
+    }
+  ]
+}

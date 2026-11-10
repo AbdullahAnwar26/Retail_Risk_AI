@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.retention.outcome_recorded.v1.schema.json",
+  "title": "com.retailintel.retention.outcome_recorded.v1",
+  "description": "Retention outcome reported (append-only). Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "CUSTOMER_OUTCOME",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.retention.outcome_recorded.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/customerLabels"
+        }
+      ],
+      "required": [
+        "action_id",
+        "outcome",
+        "outcome_source",
+        "outcome_at"
+      ],
+      "properties": {
+        "action_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "outcome": {
+          "enum": [
+            "NOT_ACTIONED",
+            "CONTACTED",
+            "RETAINED",
+            "CLOSED",
+            "UNKNOWN"
+          ]
+        },
+        "outcome_reason": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/ReferenceCode"
+        },
+        "outcome_source": {
+          "enum": [
+            "HOST",
+            "STAFF"
+          ]
+        },
+        "outcome_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "required": [
+    "subject"
+  ],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.retention.outcome_recorded.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.retention.outcome_recorded.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "subject": "cust_tok_A",
+      "jurisdiction": "US-NY-NYC",
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "permitted_use": [
+          "RETAIL_INSIGHT",
+          "MARKETING_SUGGESTION"
+        ],
+        "customer_token": "cust_tok_A",
+        "action_id": "act_01JC9Z8Q8D",
+        "outcome": "CONTACTED",
+        "outcome_reason": "CHECKIN_COMPLETED",
+        "outcome_source": "HOST",
+        "outcome_at": "2026-11-10T10:00:00Z"
+      }
+    }
+  ]
+}

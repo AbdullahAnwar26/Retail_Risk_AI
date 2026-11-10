@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.policy.review.required.v1.schema.json",
+  "title": "com.retailintel.policy.review.required.v1",
+  "description": "PENDING_LEGAL_REVIEW hit, review_due reached, or a simulation hit pending policies (internal/compliance consumers). Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "GOVERNANCE",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.policy.review.required.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/labels"
+        }
+      ],
+      "required": [
+        "policy_id",
+        "version",
+        "count",
+        "source"
+      ],
+      "properties": {
+        "policy_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/PolicyId"
+        },
+        "version": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/SemVer"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source": {
+          "enum": [
+            "RUNTIME",
+            "SIMULATION",
+            "REVIEW_DUE"
+          ]
+        },
+        "simulation_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "required": [],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.policy.review.required.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.policy.review.required.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "policy_id": "POL-US-NY-NYC-0007",
+        "version": "0.2.0",
+        "count": 12,
+        "source": "SIMULATION",
+        "simulation_id": "sim_01JC9"
+      }
+    }
+  ]
+}

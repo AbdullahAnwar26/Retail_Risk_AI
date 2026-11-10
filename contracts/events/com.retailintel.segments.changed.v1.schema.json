@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.segments.changed.v1.schema.json",
+  "title": "com.retailintel.segments.changed.v1",
+  "description": "Segment membership added or ended. Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "CUSTOMER_OUTCOME",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.segments.changed.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/customerLabels"
+        }
+      ],
+      "required": [
+        "segment_code",
+        "change",
+        "purpose",
+        "decision_id"
+      ],
+      "properties": {
+        "segment_code": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/ReferenceCode"
+        },
+        "segment_version": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/VersionLabel"
+        },
+        "change": {
+          "enum": [
+            "ADDED",
+            "ENDED"
+          ]
+        },
+        "purpose": {
+          "enum": [
+            "INSIGHT",
+            "COMMERCIAL"
+          ]
+        },
+        "decision_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        }
+      }
+    }
+  },
+  "required": [
+    "subject"
+  ],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.segments.changed.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.segments.changed.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "subject": "cust_tok_A",
+      "decisionid": "dec_01JC9Z8Q5A",
+      "jurisdiction": "US-NY-NYC",
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "permitted_use": [
+          "RETAIL_INSIGHT",
+          "MARKETING_SUGGESTION"
+        ],
+        "customer_token": "cust_tok_A",
+        "segment_code": "VARIABLE_INCOME",
+        "segment_version": "seg-1.0.0",
+        "change": "ADDED",
+        "purpose": "INSIGHT",
+        "decision_id": "dec_01JC9Z8Q5A"
+      }
+    }
+  ]
+}

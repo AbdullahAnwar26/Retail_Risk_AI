@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.needs.detected.v1.schema.json",
+  "title": "com.retailintel.needs.detected.v1",
+  "description": "New need above threshold. Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "CUSTOMER_OUTCOME",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.needs.detected.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/customerLabels"
+        }
+      ],
+      "required": [
+        "need_code",
+        "score_band",
+        "use",
+        "decision_id"
+      ],
+      "properties": {
+        "need_code": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/ReferenceCode"
+        },
+        "score_band": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/ReferenceCode"
+        },
+        "use": {
+          "enum": [
+            "INSIGHT",
+            "COMMERCIAL"
+          ]
+        },
+        "rule_version": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/VersionLabel"
+        },
+        "decision_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        }
+      }
+    }
+  },
+  "required": [
+    "subject"
+  ],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.needs.detected.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.needs.detected.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "subject": "cust_tok_A",
+      "decisionid": "dec_01JC9Z8Q5A",
+      "jurisdiction": "US-NY-NYC",
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "permitted_use": [
+          "RETAIL_INSIGHT",
+          "MARKETING_SUGGESTION"
+        ],
+        "customer_token": "cust_tok_A",
+        "need_code": "NEED_EMERGENCY_BUFFER",
+        "score_band": "HIGH",
+        "use": "INSIGHT",
+        "rule_version": "needs-1.0.0",
+        "decision_id": "dec_01JC9Z8Q5A"
+      }
+    }
+  ]
+}

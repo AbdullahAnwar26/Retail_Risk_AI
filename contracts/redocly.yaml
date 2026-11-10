@@ -1,0 +1,18 @@
+# Lint configuration for the normative contract (see contracts/README.md "How to lint").
+# Change log: 2026-11-09 created (PH-3, readiness P-4).
+apis:
+  retail-intelligence@v1:
+    root: openapi/retail-intelligence-v1.yaml
+extends:
+  - recommended
+rules:
+  # Every operation must declare at least one 4xx and its operationId/summary.
+  operation-4xx-response: error
+  operation-operationId: error
+  operation-summary: error
+  # Examples must validate against their schemas.
+  # allowAdditionalProperties must stay true: the strict mode injects unevaluatedProperties into
+  # every allOf member and rejects valid composed examples; request strictness is in the schemas.
+  no-invalid-media-type-examples:
+    severity: error
+    allowAdditionalProperties: true

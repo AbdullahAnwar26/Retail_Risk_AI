@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.policy.overlay.rejected.v1.schema.json",
+  "title": "com.retailintel.policy.overlay.rejected.v1",
+  "description": "Host overlay loosening rejected (stricter-only merge). Change log: 2026-11-09 created (PH-3, readiness P-4).",
+  "x-ri-output-class": "GOVERNANCE",
+  "allOf": [
+    {
+      "$ref": "cloudevent-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "com.retailintel.policy.overlay.rejected.v1"
+    },
+    "data": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/labels"
+        }
+      ],
+      "required": [
+        "overlay_id",
+        "rejected_controls"
+      ],
+      "properties": {
+        "overlay_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "host_id": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/Identifier"
+        },
+        "overlay_version": {
+          "$ref": "cloudevent-envelope.schema.json#/$defs/SemVer"
+        },
+        "rejected_controls": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "control_id",
+              "reason_code"
+            ],
+            "properties": {
+              "control_id": {
+                "$ref": "cloudevent-envelope.schema.json#/$defs/ControlId"
+              },
+              "reason_code": {
+                "$ref": "cloudevent-envelope.schema.json#/$defs/ReferenceCode"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [],
+  "examples": [
+    {
+      "specversion": "1.0",
+      "id": "evt_01JC9Z9A1B",
+      "source": "/retail-intel/demo-01",
+      "type": "com.retailintel.policy.overlay.rejected.v1",
+      "time": "2026-11-09T14:02:11Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://retail-intel.invalid/contracts/events/v1/com.retailintel.policy.overlay.rejected.v1.schema.json",
+      "contractversion": "1.0.0",
+      "correlationid": "corr-7f3a9c",
+      "illustrative": false,
+      "data": {
+        "not_for_credit_decisioning": true,
+        "illustrative": false,
+        "watermark": null,
+        "overlay_id": "ovl_host_x",
+        "host_id": "host_x",
+        "overlay_version": "1.0.0",
+        "rejected_controls": [
+          {
+            "control_id": "CTL-CHANNEL-ALLOW",
+            "reason_code": "OVERLAY_LOOSENS_CONTROL"
+          }
+        ]
+      }
+    }
+  ]
+}
