@@ -1,0 +1,15 @@
+# OS and editor files
+Thumbs.db
+.DS_Store
+desktop.ini
+.vscode/
+.idea/
+
+# Local tool output
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+
+# Personal Claude Code settings (never shared)
+.claude/settings.local.json
