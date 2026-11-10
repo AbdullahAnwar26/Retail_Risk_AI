@@ -1,0 +1,15 @@
+# Team / enterprise overrides for _bmad/config.toml.
+# Committed to the repo — applies to every developer on the project.
+# Tables deep-merge over base config; keyed entries merge by key.
+# Example: override an agent descriptor, or add a new agent.
+#
+# [agents.bmad-agent-pm]
+# description = "Prefers short, bulleted PRDs over narrative drafts."
+
+# Project knowledge lives in the approved planning pack (planning/00-18), not docs/.
+# Pinned here (team override) so BMad skills that scan {project_knowledge}
+# (create-epics-and-stories, sprint-planning readiness gate, correct-course, agents)
+# read the pack. Base _bmad/config.toml is installer-managed and left untouched.
+# Set 2026-11-09 during BMAD planning import (see planning/00 section 5B).
+[modules.bmm]
+project_knowledge = "{project-root}/planning"

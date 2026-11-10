@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "deny": [
+      "Skill(bmad-build)",
+      "Skill(bmad-build-auto)",
+      "Skill(bmad-agent-dev)",
+      "Skill(bmad-qa-generate-e2e-tests)"
+    ]
+  },
+  "skillOverrides": {
+    "bmad-build": "off",
+    "bmad-build-auto": "off",
+    "bmad-agent-dev": "off",
+    "bmad-qa-generate-e2e-tests": "off"
+  }
+}
